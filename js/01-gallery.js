@@ -31,9 +31,23 @@ function showModal(evt) {
     evt.preventDefault()
     const bigImage = evt.target.dataset.source;
     const instance = basicLightbox.create(`
-    <img src="${bigImage}" width="800" height="600">
-`)
+    <img src="${bigImage}" width="800" height="600">`,
+    {
+      onShow: () => {
+        window.addEventListener('keydown', onKeydownEsc);
+      },
+      onClose: () => {
+        window.removeEventListener('keydown', onKeydownEsc);
+      },
+    },
+);
 
+  const onKeydownEsc = evt => {
+    console.log(evt.code);
+    if (evt.code === 'Escape') {
+      instance.close();
+    }
+  };
     instance.show() 
     
 }
